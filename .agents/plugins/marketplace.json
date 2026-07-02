@@ -1,0 +1,19 @@
+{
+  "name": "kngd-marketplace",
+  "interface": {
+    "displayName": "kngd Codex Plugins"
+  },
+  "plugins": [
+    {
+      "name": "gamejam",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gamejam"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

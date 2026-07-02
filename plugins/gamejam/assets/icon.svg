@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Game Jam Kit">
+  <rect width="64" height="64" rx="12" fill="#F97316"/>
+  <!-- gamepad d-pad -->
+  <rect x="12" y="34" width="16" height="5" rx="2" fill="#ffffff"/>
+  <rect x="17.5" y="28.5" width="5" height="16" rx="2" fill="#ffffff"/>
+  <!-- action buttons -->
+  <circle cx="40" cy="33" r="3.2" fill="#ffffff"/>
+  <circle cx="46" cy="40" r="3.2" fill="#ffffff"/>
+  <!-- spark: ship it fast -->
+  <path d="M44 10 l2.6 6.4 l6.4 2.6 l-6.4 2.6 l-2.6 6.4 l-2.6 -6.4 l-6.4 -2.6 l6.4 -2.6 z" fill="#FEF3C7" stroke="#ffffff" stroke-width="1" stroke-linejoin="round"/>
+</svg>

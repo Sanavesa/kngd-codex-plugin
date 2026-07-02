@@ -1,0 +1,4 @@
+interface:
+  display_name: "Submit to itch.io"
+  short_description: "Package the game: upload-ready zip (index.html at root) + publishing checklist"
+  default_prompt: "Package my game for itch.io: build the upload-ready zip and give me the publishing checklist."
