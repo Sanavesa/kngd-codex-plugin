@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "gamejam",
+      "name": "kngd",
       "source": {
         "source": "local",
-        "path": "./plugins/gamejam"
+        "path": "./plugins/kngd"
       },
       "policy": {
         "installation": "AVAILABLE"
