@@ -19,17 +19,17 @@ build.** Codex does not open a browser to test — the *user* plays their own bu
   or big.
 - Build on a **real engine, loaded from a CDN — library-first**: **Phaser** for 2D, **three.js**
   for 3D (vanilla `<canvas>` only if the user asks), pulled from **jsdelivr**
-  (`https://cdn.jsdelivr.net/npm/…`, whose permissive CORS is what lets three.js's module import
-  run from `file://`) via a `<script>`/importmap tag — **no build tools, no bundler**. Pin the
-  version in every URL; for three.js **addons** add a matching `"three/addons/"` importmap entry at
-  the **same version** as core `three`.
+  (`https://cdn.jsdelivr.net/npm/…`) via a `<script>`/importmap tag — **no build tools, no
+  bundler**. Pin the version in every URL; for three.js **addons** add a matching `"three/addons/"`
+  importmap entry at the **same version** as core `three`.
 - **Default to a clean file split for a real game — `index.html` + `game.js` + `style.css`** — and
-  collapse to a single inline `index.html` for a tiny toy. One catch keeps double-click working: a
-  `<link>`ed `style.css` and a **classic** `<script src="game.js">` load fine from `file://`, but a
-  **local ES-module file does not**. So split Phaser's `game.js` as a classic script (after the
-  Phaser tag); for three.js keep the `<script type="module">` **inline in `index.html`** (an
-  inline module can import the three.js CDN URL from `file://`; a local `game.js` module cannot)
-  and split only `style.css` — so a 3D game double-clicks too.
+  collapse to a single inline `index.html` for a tiny toy. The game runs on the launcher's local
+  server (below), so `game.js` can be a plain `<script>` **or** an ES module — split three.js and
+  Phaser however is cleanest, no `file://` limits.
+- **Drop in the `play` launcher** so the user plays with one double-click. Copy
+  `play.py` + `play.command` + `play.bat` from the kit's `scripts/` into the game folder and
+  `chmod +x play.command play.py`. It starts a tiny local server and opens the browser — which is
+  what lets **any** asset (models, atlases, tilemaps, audio) load normally from `assets/`.
 
 ## Keep it itch.io-iframe-safe and crisp (from the start, and as it grows)
 
@@ -66,15 +66,10 @@ and reuse objects, and reset **all** state cleanly on restart.
   `AudioContext` resumed on the first gesture, an **M** mute key, and subtle looping music if it
   fits).
 - For the user's **own** asset: they drop the file in the **`assets/` folder** and reference it
-  as `@assets/name`, and you wire it in — **loading it through an HTML element so it still
-  double-clicks**: **images** via Phaser's `loader: { imageLoadType: 'HTMLImageElement' }` game
-  config (then `this.load.image('k', 'assets/x.png')`) or three.js `new THREE.TextureLoader()`;
-  **audio** via a plain `<audio>` element (`new Audio('assets/music.mp3')`). **Fetch-only formats
-  won't load from `file://`** — JSON atlases/tilemaps/bitmap-fonts and 3D model files
-  (GLTF/GLB/OBJ) — so prefer a **code-defined spritesheet** (frame sizes in code) and
-  **procedural or texture-mapped-primitive** 3D; if a model/JSON is truly needed it's the one case
-  for `python3 -m http.server` locally (it still works on itch). If they paste or upload straight
-  into chat, have them save it into `assets/` so it ships with the game.
+  as `@assets/name`, and you wire it in with the engine's normal loader — **any format works**
+  (images, audio, sprite atlases, tilemaps, 3D models), because the game runs on the launcher's
+  local server, not `file://`. If they paste or upload straight into chat, have them save it into
+  `assets/` so it ships with the game.
 - Never let them be blocked waiting on art or audio. Remind them to **credit** any third-party
   or AI assets.
 
@@ -104,17 +99,16 @@ iframe-safe high score, and smooth transitions — cheap presentation points beg
 
 ## Running it
 
-**Double-click must always work** — `index.html` runs on a plain double-click (which opens it over
-`file://`), no server, no build step. That holds because the engine loads from its CDN (Phaser's
-classic `<script src>` and three.js's inline `<script type="module">` both run from `file://`) and
-**assets load through HTML elements** (`<img>`/`TextureLoader`, `<audio>`), never `fetch`/XHR. So
-the user's own **images and audio** in `assets/` load fine on a double-click (see *Art and sound*
-for the loaders). The only things `file://` blocks are **fetch-only formats** — JSON
-atlases/tilemaps and 3D model files — which we steer around locally (code-defined spritesheets,
-procedural 3D) and which still work on **itch**, where everything is served over the web. After
-each change, remind them to **refresh**, and to **hard-refresh (Ctrl/Cmd+Shift+R)** if a change
-doesn't show up (the browser caches). Encourage running and playtesting often, and uploading a
-working build early.
+To play, they **double-click the `play` launcher** — `play.command` on Mac, `play.bat` on Windows.
+It starts a tiny local server and opens the game in the browser (no typing, still just a
+double-click). They leave that window open while playing and close it to stop. Running on a real
+server (`http://localhost`) is what makes **every asset format work** — models, atlases, tilemaps,
+audio — straight from `assets/`, with none of the `file://` limits. The launcher serves files
+**no-cache**, so a plain **refresh** always shows the latest change (no hard-refresh needed). On
+**itch** the game is served the same way (over the web), so it runs there unchanged. Encourage
+running and playtesting often, and uploading a working build early. (If a beginner is stuck
+launching it, Codex can start the server for them — or they can run `python3 -m http.server` in
+the game folder.)
 
 ## Ask with options, never open-ended
 

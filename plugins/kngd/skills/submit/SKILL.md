@@ -42,7 +42,8 @@ a browser.
   python3 "${PLUGIN_ROOT}/scripts/package_for_itch.py" <game-dir> -o <game-dir>/submission/game.zip
   ```
   The script guarantees the root layout, warns on `http://` mixed content (blocked on itch), and
-  notes any CDN dependency. It also **excludes the dev docs** (`AGENTS.md`, `PROGRESS.md`) so they
+  notes any CDN dependency. It also **excludes the dev-only files** (`AGENTS.md`, `PROGRESS.md`, and
+  the `play.py`/`play.command`/`play.bat` launcher) so they
   don't ship in the game. **Tell the user the exact path** to `submission/game.zip`.
 
 ## 3. Publishing checklist

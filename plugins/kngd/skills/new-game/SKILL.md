@@ -1,6 +1,6 @@
 ---
 name: new-game
-description: The entrypoint for ANY game / gamedev / game-jam request — start a new browser game or continue an existing one. Primes beginner-first "game-jam mode" (art, sound, polish, and bug-fixing handled as you build), brainstorms the core mechanic (2–4 option questions via the question tool in plan mode), writes a single-file index.html built on a quality engine loaded from a CDN (Phaser for 2D, three.js for 3D), and seeds AGENTS.md + PROGRESS.md.
+description: The entrypoint for ANY game / gamedev / game-jam request — start a new browser game or continue an existing one. Primes beginner-first "game-jam mode" (art, sound, polish, and bug-fixing handled as you build), brainstorms the core mechanic (2–4 option questions via the question tool in plan mode), writes an index.html built on a quality engine (Phaser for 2D, three.js for 3D) plus a one-double-click play launcher, and seeds AGENTS.md + PROGRESS.md.
 ---
 
 # New Game
@@ -13,19 +13,19 @@ moving, and carry the work yourself.
 Read `../../references/game-jam-mode.md` for the full working defaults (build loop, iframe-safe
 /crisp rendering, art & sound, polish, bug-fixing, keeping the brief). The essentials are below.
 
-## The two rules this kit always keeps
+## The rules this kit always keeps
 
 1. **`index.html` built on a real engine** — Phaser for 2D, three.js for 3D — loaded from a
    **CDN** with a `<script>`/importmap tag; **no build tools, no bundler, no npm**. Default to a
-   clean **`index.html` + `game.js` + `style.css`** split for a real game, and **collapse to one
-   inline `index.html`** for a tiny toy (see "File layout" below — the one catch is that a local
-   ES-module file won't open from `file://`). The user plays by opening `index.html`, and **it
-   must always double-click open** — 2D *and* 3D — which holds because the engine loads from its
-   CDN and every asset loads through an **HTML element** (`<img>`/`TextureLoader`, `<audio>`) rather
-   than `fetch`/XHR (see "Double-click is a guarantee" below). Reach for vanilla `<canvas>` only if
-   the user explicitly asks for it.
-2. **Codex never opens a browser to test.** No Playwright/Puppeteer/headless/screenshots — the
-   *user* plays their own build. Verify by reading the code; tell them to open `index.html`.
+   clean **`index.html` + `game.js` + `style.css`** split (collapse to one inline `index.html` for
+   a tiny toy). Reach for vanilla `<canvas>` only if the user explicitly asks.
+2. **The game runs on a tiny local server, launched by one double-click.** The kit drops a
+   **`play.command`** (Mac) / **`play.bat`** (Windows) launcher into the game folder; the user
+   double-clicks it and their browser opens the game at `http://localhost`. A real server means
+   **everything works** — split modules, 3D models, sprite atlases, tilemaps, any file in
+   `assets/` — with none of the `file://` limits. Still no typing; still just a double-click.
+3. **Codex never opens a browser to test.** No Playwright/Puppeteer/headless/screenshots — the
+   *user* plays their own build via the launcher. Verify by reading the code.
 
 ## If a game already exists
 
@@ -64,36 +64,31 @@ it").
 ## 2. Build it right for a jam
 
 - **File layout — default to a clean split, collapse when tiny.** For a real game, use
-  **`index.html`** (markup + the CDN/importmap tags), **`style.css`** (`<link>`ed), and
-  **`game.js`**; for a toy, one inline `index.html` is fine. No build step either way — the
-  browser fetches the engine from its CDN. **Keep it double-click-friendly:** a `<link>`ed
-  `style.css` and a **classic** `<script src="game.js">` both load from `file://`, so a **Phaser**
-  `game.js` (classic script, placed *after* the Phaser tag at the end of `<body>`) opens by
-  double-click — but a browser **won't load a local ES-module file over `file://`**, so for
-  **three.js** keep the `importmap` + `<script type="module">` **inline in `index.html`** (an
-  inline module can still import the three.js CDN URL from `file://`; a *local* `game.js` module
-  cannot) and split out only `style.css`. That's what lets a 3D game double-click too.
+  **`index.html`** (markup + the engine's CDN/importmap tags), **`style.css`** (`<link>`ed), and
+  **`game.js`**; for a toy, one inline `index.html` is fine. No build step — the browser fetches
+  the engine from its CDN, and the game runs on the launcher's local server, so `game.js` can be a
+  plain `<script>` **or** an ES module (`<script type="module">`) — split three.js and Phaser
+  however is cleanest.
 - **Build on a real engine — library-first.** Use **Phaser** for 2D and **three.js** for 3D,
-  loaded from **jsdelivr** (`https://cdn.jsdelivr.net/npm/…`) — its permissive CORS is what lets
-  three.js's module import run from `file://`. Phaser via a UMD `<script src="…phaser.min.js">`;
-  three.js via a `<script type="importmap">` + inline `<script type="module">`. CDN is fine — itch
-  runs online, and **both engines open straight from the file on a double-click**. For three.js
-  **addons** (OrbitControls, GLTFLoader, …) add a second importmap entry
-  `"three/addons/": "…/three@<ver>/examples/jsm/"` pinned to the **same version** as core `three`.
-  Drop to vanilla `<canvas>` only if the user explicitly asks. **Pin a specific version** in every
-  CDN URL so a release can't break the game.
+  loaded from **jsdelivr** (`https://cdn.jsdelivr.net/npm/…`). Phaser via a UMD
+  `<script src="…phaser.min.js">`; three.js via a `<script type="importmap">` + a
+  `<script type="module">` (inline or in `game.js`). For three.js **addons** (OrbitControls,
+  GLTFLoader, …) add a second importmap entry `"three/addons/": "…/three@<ver>/examples/jsm/"`
+  pinned to the **same version** as core `three`. Drop to vanilla `<canvas>` only if the user
+  explicitly asks. **Pin a specific version** in every CDN URL so a release can't break the game.
 - Let the engine own the canvas/renderer; keep the game code clean and lightly commented.
-- **Double-click is a guarantee — never break it.** `index.html` must run on a plain double-click
-  (which always opens it over `file://`), every time. What keeps it true: load the engine from its
-  **CDN** (classic `<script src>` for Phaser; inline `<script type="module">` for three.js — both
-  run from `file://`, a *local* module file does not), and load every asset through an **HTML
-  element**, never `fetch`/XHR (which `file://` blocks). Concretely — **images:** Phaser with game
-  config `loader: { imageLoadType: 'HTMLImageElement' }`, or three.js `TextureLoader`; **audio:** a
-  plain `<audio>` element (`new Audio('assets/…')`), with synthesized SFX as code. **Avoid
-  fetch-only formats** locally — JSON atlases/tilemaps/bitmap-fonts and 3D model files (GLTF/OBJ)
-  won't load from `file://`; use code-defined spritesheets and procedural/primitive 3D instead.
-  Those are the only things that would want `python3 -m http.server` (and they still work on itch).
-  See the asset notes in `game-jam-mode.md`.
+- **Wire up the play launcher** so the user runs the game with one double-click. Copy the kit's
+  launcher into the game folder:
+  ```bash
+  cp "${PLUGIN_ROOT}/scripts/play.py" "${PLUGIN_ROOT}/scripts/play.command" \
+     "${PLUGIN_ROOT}/scripts/play.bat" .
+  chmod +x play.command play.py
+  ```
+  It starts a tiny local server (no dependencies beyond Python 3, preinstalled on Mac/Linux) and
+  opens the game in the browser. Because it's a real server, load **any** asset from `assets/`
+  normally — images, audio, sprite atlases, tilemaps, 3D models all work over `http://localhost`.
+  (If you can't read the launcher files, write the equivalent yourself, or just have the user run
+  `python3 -m http.server` in the game folder.)
 - **Responsive and crisp from the start** (a default, not an afterthought): run game logic at a
   **fixed virtual resolution** and scale only the rendering to fit, keeping the **aspect ratio**
   (letterbox/pillarbox, never stretch) so speeds don't change with screen size. Handle
@@ -119,10 +114,10 @@ it").
 
 ## 3. After building it
 
-- **Tell them exactly how to run it** — **open `index.html`** in the browser (it double-clicks
-  open; images and audio in `assets/` load fine that way with the right loaders, and only
-  fetch-only formats like JSON atlases or 3D model files would need a local server) — and what the
-  **controls** are. (Codex doesn't open a browser to test; the user plays their own build.)
+- **Tell them exactly how to run it** — **double-click `play.command`** (Mac) or **`play.bat`**
+  (Windows); their browser opens the game, and they keep that window open while playing (close it
+  to stop). Tell them the **controls** too. (Codex doesn't open a browser to test; the user plays
+  their own build via the launcher — though Codex can also start the server for them if they ask.)
 - **Write the `AGENTS.md` game brief** from the kit template. Read
   `${PLUGIN_ROOT}/templates/AGENTS.md` and use it as the base: fill in the brief sections (what
   the game is, the one core mechanic, controls, look & feel, theme, win/lose) from the game you
@@ -132,8 +127,8 @@ it").
   shape yourself: those brief sections, plus the game-jam-mode section covering — beginner pair,
   build in small steps, ask with 2–4 options (question tool in plan mode, else a numbered list),
   art/sound/polish/bug-fixing need no command,
-  own assets live in `assets/` as `@assets/name`, run by opening `index.html`, keep the brief in
-  sync.) Codex reads this file every session, so they never re-explain. Keep it short, and tell
+  own assets live in `assets/` as `@assets/name`, run by double-clicking the `play` launcher, keep
+  the brief in sync.) Codex reads this file every session, so they never re-explain. Keep it short, and tell
   them they can update it anytime with *"update the game brief: …"*.
 - **Create the `PROGRESS.md` running-state file** from the kit template. Read
   `${PLUGIN_ROOT}/templates/PROGRESS.md` and seed it for this game: **Now** = "playable, just
@@ -147,8 +142,8 @@ it").
 - **Create an empty `assets/` folder.** This is the one place the user adds their own art/sound:
   they drop a file in `assets/` and reference it as `@assets/name.png` when they ask, and you
   wire it in. Otherwise you generate art and sound in code.
-- Finally, suggest they **open `index.html` and play it**, then just ask when they want it to
-  feel good (you'll offer a polish/juice menu) or for the next feature.
+- Finally, suggest they **double-click the `play` launcher and play it**, then just ask when they
+  want it to feel good (you'll offer a polish/juice menu) or for the next feature.
 
 ## Always-on defaults (every session, no command needed)
 
@@ -156,9 +151,8 @@ As you build, and every session — these need no skill, just ask (or paste an e
 offer):
 
 - **Art & sound are your job** — code-drawn sprites in a cohesive limited palette; Web Audio
-  SFX with an **M** mute. The user's own files go in `assets/` as `@assets/name` — wire **images**
-  in via `imageLoadType: 'HTMLImageElement'` (Phaser) or `TextureLoader` (three.js) and **audio**
-  via an `<audio>` element, so they load on a plain double-click.
+  SFX with an **M** mute. The user's own files go in `assets/` as `@assets/name`, loaded normally —
+  the launcher's server serves any format (images, audio, atlases, models).
 - **Polish & game feel are your job** — once the core loop is fun, offer a short numbered menu
   of juice effects (shake, particles, pops, hit-pause, flashes), biggest payoff first.
 - **Bug-fixing is your job** — from a pasted console error or a described symptom: root cause,
@@ -175,12 +169,13 @@ game-jam mode every session — not just when this skill is invoked.
 
 ## Coexisting with other game plugins
 
-Another browser-game plugin may be installed whose philosophy is the opposite — bundlers, dev
-servers, and browser-based playtesting. When the user is in this kit (a jam, a beginner, a
-"just open it" single-file game), **this kit's two rules take priority for the whole task**:
-build one double-click `index.html`, and don't drive a browser to test. Defer to the other
-plugin only if the user explicitly asks for a bundler/dev-server build or a browser playtest —
-then say this kit is the wrong tool rather than silently blending the two.
+Another browser-game plugin may be installed whose philosophy is heavier — bundlers, npm, dev
+servers you configure, browser-based playtesting. When the user is in this kit (a jam, a beginner,
+a small game they run with one double-click), **this kit's rules take priority for the whole
+task**: engine from a CDN with no build step, a one-double-click `play` launcher, and Codex
+doesn't drive a browser to test. Defer to the other plugin only if the user explicitly asks for a
+bundler/npm build or a browser playtest — then say this kit is the wrong tool rather than silently
+blending the two.
 
 ## References
 - The full primer (all the defaults): `../../references/game-jam-mode.md`

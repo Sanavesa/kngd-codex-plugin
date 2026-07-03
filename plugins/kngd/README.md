@@ -1,8 +1,9 @@
 # KNGD (plugin)
 
 Beginner-friendly Codex skills for building an HTML5 game in a jam. Built on a real engine —
-**Phaser** for 2D, **three.js** for 3D — loaded from a CDN, so there's **no build step**: just one
-`index.html` you open in the browser and submit to itch.io. You talk, Codex builds.
+**Phaser** for 2D, **three.js** for 3D — loaded from a CDN, so there's **no build step**. You play
+with one double-click (a tiny `play` launcher spins up a local server) and submit to itch.io. You
+talk, Codex builds.
 
 ## Skills (2)
 
@@ -13,10 +14,10 @@ Beginner-friendly Codex skills for building an HTML5 game in a jam. Built on a r
 
 **Art, sound, polish, and bug-fixing need no skill:** just ask (or paste an error / let Codex
 offer). It generates art and sound in code, adds game-feel juice from a menu, and fixes bugs from
-a console error or your description, as part of building, every session. To **play**, open
-`index.html` in your browser — it double-clicks open (2D **and** 3D; the engine loads from a CDN,
-and your images/audio in `assets/` load through HTML elements). To use your **own**
-asset, drop the file in the
+a console error or your description, as part of building, every session. To **play**, double-click
+the **`play` launcher** (`play.command` on Mac, `play.bat` on Windows) — it starts a tiny local
+server and opens your game (still just a double-click), so every asset format works. To use your
+**own** asset, drop the file in the
 **`assets/` folder** and reference it as `@assets/name.png`.
 
 The always-on primer is bundled into the `AGENTS.md` that `new-game` writes into your game folder,

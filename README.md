@@ -44,8 +44,9 @@ Just talk — Codex handles the rest:
 
 ### 3. Play
 
-Open `index.html` in your browser — it double-clicks open (2D **and** 3D; the engine loads from a
-CDN and art/sound are code-generated, so there's nothing local to fetch).
+Double-click **`play.command`** (Mac) or **`play.bat`** (Windows) — it starts a tiny local server
+and opens your game in the browser (no typing, still just a double-click). Running on a real server
+means every asset works: sprites, audio, atlases, tilemaps, 3D models.
 
 ### 4. Submit to itch.io
 

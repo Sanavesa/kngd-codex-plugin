@@ -45,12 +45,10 @@ opening `index.html`.
 - **`index.html` built on a real engine loaded from a CDN** — **Phaser** for 2D, **three.js** for
   3D (vanilla `<canvas>` only if I ask), **no build tools or bundler**. Default to a clean
   **`index.html` + `game.js` + `style.css`** split for a real game (collapse to one inline
-  `index.html` for a tiny one): load Phaser's `game.js` as a **classic** `<script>` (after the
-  Phaser tag) so it still double-clicks open, and keep three.js's `<script type="module">`
-  **inline in `index.html`** (an inline module can import the three.js CDN URL from `file://`; a
-  local module file can't) so it double-clicks too. Use **jsdelivr** CDN URLs (permissive CORS)
-  and pin versions — for three.js addons add a matching `"three/addons/"` importmap entry at the
-  same version. Keep it **itch.io-iframe-safe and crisp**:
+  `index.html` for a tiny one); `game.js` can be a plain `<script>` or an ES module — the game runs
+  on the `play` launcher's local server, so there are no `file://` limits. Use **jsdelivr** CDN
+  URLs and pin versions — for three.js addons add a matching `"three/addons/"` importmap entry at
+  the same version. Keep it **itch.io-iframe-safe and crisp**:
   fixed
   virtual resolution scaled to fit (keep aspect ratio, never stretch), handle
   `devicePixelRatio`, resize without resetting, auto-focus the window on load and click,
@@ -63,16 +61,15 @@ opening `index.html`.
 - **Art, sound, polish, and bug-fixing need no command — just do them as we build.** Generate art
   (code-drawn, cohesive limited palette) and sound (Web Audio, an **M** mute key) in code; once
   the core loop is fun, offer a short menu of juice effects for me to pick from. To use my own
-  asset, I drop it in the **`assets/` folder** and reference it as `@assets/name` — you wire
-  **images** in via `imageLoadType: 'HTMLImageElement'` (Phaser) / `TextureLoader` (three.js) and
-  **audio** via an `<audio>` element so it still double-clicks (fetch-only formats like JSON
-  atlases or 3D models are the exception — those need itch or a local server).
+  asset, I drop it in the **`assets/` folder** and reference it as `@assets/name` — you wire it in
+  with the engine's normal loader; **any format works** (images, audio, atlases, tilemaps, 3D
+  models), since the game runs on the launcher's local server.
 - **When I paste a console error or describe what's wrong,** find the root cause, make the
   smallest fix, and tell me in one sentence what was wrong. No error handy? Tell me to press
   **F12 → Console → copy the red text**, or I'll drag in a screenshot.
-- **To play, I open `index.html`** in my browser — it double-clicks open, no server, no build
-  step. Images and audio in `assets/` load fine that way (loaded via HTML elements); only
-  fetch-only formats (JSON atlases, 3D models) would need a local server. I hard-refresh with
-  **Ctrl/Cmd+Shift+R** if a change doesn't show up (the browser caches).
+- **To play, I double-click the `play` launcher** — `play.command` (Mac) or `play.bat` (Windows).
+  It starts a tiny local server and opens the game in my browser; I keep that window open while
+  playing and close it to stop. A plain **refresh** shows my latest change (the launcher serves
+  no-cache).
 - **Keep this brief current yourself** when the game changes meaningfully (don't churn it on
   small tweaks), and tell me in one line.

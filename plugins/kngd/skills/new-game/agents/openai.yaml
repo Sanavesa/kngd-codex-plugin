@@ -1,4 +1,4 @@
 interface:
   display_name: "New Game"
-  short_description: "Start or continue a jam game: brainstorm, then build a single-file index.html"
-  default_prompt: "Let's start a new game for the jam — brainstorm the idea with me, then build a playable index.html."
+  short_description: "Start or continue a jam game: brainstorm, then build a playable browser game (Phaser/three.js)"
+  default_prompt: "Let's start a new game for the jam — brainstorm the idea with me, then build a playable game I can run with one double-click."

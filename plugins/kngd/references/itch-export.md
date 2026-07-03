@@ -8,8 +8,9 @@ write — this kit only prepares the files.)
 
 itch serves HTML5 games from an HTTPS sandbox domain inside an `<iframe>`. An `index.html` that
 already follows game-jam mode (engine from an HTTPS CDN, iframe-safe scaling, auto-focus, audio-
-on-gesture, namespaced `localStorage` in try/catch) runs on itch **unchanged** — no rewrite. Only
-a few things differ from local double-click:
+on-gesture, namespaced `localStorage` in try/catch) runs on itch **unchanged** — no rewrite. Since
+local dev already runs on the `play` launcher's server, itch behaves almost identically; only a few
+things differ:
 
 1. **The game lives in an iframe.** It must grab keyboard focus (`window.focus()` on load and
    click) or judges' keys do nothing. Fullscreen and pointer lock need a user gesture; itch
@@ -18,10 +19,10 @@ a few things differ from local double-click:
 3. **CDN links work** — this kit builds on Phaser/three.js loaded from a CDN, and itch runs the
    game online, so the engine loads normally at judging time. Just keep every URL **`https://`**
    (see above) and **pin the engine version** in the URL so a new release can't change behavior.
-4. **Every asset loader works** (a plus over local double-click). Because itch serves over HTTP,
-   `fetch`-based formats — JSON atlases/tilemaps, GLTF/OBJ models — that a `file://` double-click
-   can't read load **fine** here. An asset that needed a local server during dev works unchanged on
-   itch; just make sure it's included in the zip.
+4. **Asset loaders behave the same as local dev.** Both local (`play` launcher server) and itch
+   serve over HTTP, so every loader — sprite atlases, tilemaps, GLTF/OBJ models, audio — works
+   identically in both places. The launcher files (`play.py`/`play.command`/`play.bat`) are
+   dev-only and left out of the zip; itch just needs `index.html` + `assets/`.
 
 ## Zip requirements (the #1 cause of "won't load")
 

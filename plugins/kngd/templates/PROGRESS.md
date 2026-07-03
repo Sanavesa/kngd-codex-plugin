@@ -30,5 +30,6 @@ e.g. "- Deferred multiplayer (scope). - Chose fixed 320×180 virtual resolution.
 -
 
 ## How to run
-Open `index.html` in the browser (double-click). Hard-refresh with Ctrl/Cmd+Shift+R if a change
-doesn't show up.
+Double-click the `play` launcher — `play.command` (Mac) or `play.bat` (Windows). It starts a tiny
+local server and opens the game in the browser; leave that window open while playing, close it to
+stop. A plain refresh shows the latest change (the launcher serves no-cache).
