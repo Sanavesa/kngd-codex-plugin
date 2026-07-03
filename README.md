@@ -1,8 +1,9 @@
 # KNGD — a Codex plugin
 
 **Kuwait National Game Development** — a beginner-friendly game-jam kit for **Codex**. You talk, Codex builds: brainstorm an idea,
-build a self-contained `index.html` you run by double-clicking, and submit it to itch.io. Art,
-sound, polish, and bug-fixing just happen as you go — no engine, no build tools, no commands.
+build an `index.html` on a real engine (**Phaser** for 2D, **three.js** for 3D, loaded from a
+CDN), and submit it to itch.io. Art, sound, polish, and bug-fixing just happen as you go — **no
+build tools, no commands**.
 
 ## Install
 
@@ -43,7 +44,8 @@ Just talk — Codex handles the rest:
 
 ### 3. Play
 
-Double-click `index.html` in your browser.
+Open `index.html` in your browser — it double-clicks open (2D **and** 3D; the engine loads from a
+CDN and art/sound are code-generated, so there's nothing local to fetch).
 
 ### 4. Submit to itch.io
 

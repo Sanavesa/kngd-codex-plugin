@@ -1,6 +1,6 @@
 {
   "name": "kngd",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A beginner-friendly game-jam kit for Codex. Take a game from idea to itch.io by just talking: brainstorm and build a single-file browser game, then ship it — with art, sound, polish, and bug-fixing handled as you build.",
   "author": {
     "name": "kngd",
@@ -25,7 +25,7 @@
   "interface": {
     "displayName": "KNGD",
     "shortDescription": "Idea to itch.io by just talking — build and ship browser games",
-    "longDescription": "A beginner-first game-jam kit. You talk, Codex builds: it brainstorms your idea, writes one self-contained index.html you run by double-clicking, and keeps a game brief in AGENTS.md. Art, sound, game-feel polish, and bug-fixing happen as you build — no command needed — and one skill packages the game for an itch.io submission. Codex never opens a browser to test; you play your own build.",
+    "longDescription": "A beginner-first game-jam kit. You talk, Codex builds: it brainstorms your idea, writes one index.html built on a real engine (Phaser for 2D, three.js for 3D, loaded from a CDN — no build step), and keeps a game brief in AGENTS.md. Art, sound, game-feel polish, and bug-fixing happen as you build — no command needed — and one skill packages the game for an itch.io submission. Codex never opens a browser to test; you play your own build.",
     "developerName": "kngd",
     "category": "Developer Tools",
     "capabilities": [

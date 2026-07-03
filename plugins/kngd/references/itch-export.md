@@ -6,17 +6,22 @@ write — this kit only prepares the files.)
 
 ## itch runs your game over HTTPS in an iframe
 
-itch serves HTML5 games from an HTTPS sandbox domain inside an `<iframe>`. A self-contained
-`index.html` that already follows game-jam mode (iframe-safe scaling, auto-focus, audio-on-
-gesture, namespaced `localStorage` in try/catch) runs on itch **unchanged** — no rewrite. Only a
-few things differ from local double-click:
+itch serves HTML5 games from an HTTPS sandbox domain inside an `<iframe>`. An `index.html` that
+already follows game-jam mode (engine from an HTTPS CDN, iframe-safe scaling, auto-focus, audio-
+on-gesture, namespaced `localStorage` in try/catch) runs on itch **unchanged** — no rewrite. Only
+a few things differ from local double-click:
 
 1. **The game lives in an iframe.** It must grab keyboard focus (`window.focus()` on load and
    click) or judges' keys do nothing. Fullscreen and pointer lock need a user gesture; itch
    provides a Fullscreen button.
 2. **`http://` subresources are blocked** as mixed content (itch is HTTPS). Use `https://`.
-3. **CDN links work**, but the game then needs internet at judging time. Self-contained
-   (procedural/embedded assets, no external libs) is the most reliable — nothing can break.
+3. **CDN links work** — this kit builds on Phaser/three.js loaded from a CDN, and itch runs the
+   game online, so the engine loads normally at judging time. Just keep every URL **`https://`**
+   (see above) and **pin the engine version** in the URL so a new release can't change behavior.
+4. **Every asset loader works** (a plus over local double-click). Because itch serves over HTTP,
+   `fetch`-based formats — JSON atlases/tilemaps, GLTF/OBJ models — that a `file://` double-click
+   can't read load **fine** here. An asset that needed a local server during dev works unchanged on
+   itch; just make sure it's included in the zip.
 
 ## Zip requirements (the #1 cause of "won't load")
 

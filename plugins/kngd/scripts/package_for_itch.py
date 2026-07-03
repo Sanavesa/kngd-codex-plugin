@@ -13,10 +13,10 @@ Defaults:
     GAME_DIR = current directory
     OUT_ZIP  = <GAME_DIR>/submission/game.zip
 
-itch.io serves games over HTTPS inside an iframe, so a file://-safe (zero-build) game
+itch.io serves games over HTTPS inside an iframe, so a zero-build game (engine from a CDN)
 runs there unchanged. This script also warns about the two things that DO differ on itch:
   * http:// subresources  -> blocked as mixed content (itch is https)
-  * https:// CDN links    -> the game needs internet at judging time (consider vendoring)
+  * https:// CDN links    -> load fine on itch (it's online); the note just flags them
 """
 
 import argparse
@@ -130,11 +130,11 @@ def main(argv):
         for rel, ln, url in mixed[:12]:
             print(f"         {rel}:{ln}  {url}")
     if cdns:
-        print("\n  [note] game loads from these CDNs — it will need internet on itch at judging time:")
+        print("\n  [note] game loads from these CDNs (expected — Phaser/three.js load this way):")
         for u in cdns[:12]:
             print(f"         {u}")
-        print("         For reliability, consider vendoring UMD/global libs as a local classic <script> "
-              "(safe for both file:// and itch).")
+        print("         These load fine on itch (it's online). Keep every URL https:// and pin the "
+              "engine version so a new release can't change the game.")
     if zip_size > 500 * 1024 * 1024:
         warned = True
         print(f"\n  [WARN] zip is {human(zip_size)} — over itch's practical size; trim assets.")

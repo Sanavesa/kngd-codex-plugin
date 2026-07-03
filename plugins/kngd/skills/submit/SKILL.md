@@ -29,10 +29,11 @@ a browser.
   `AGENTS.md` brief, or the `<title>` in `index.html`. **Only if none exists, ask** (suggest one
   from the game); don't invent one silently. The user will use this name when they set up the
   itch page.
-- **Confirm the entry file is `index.html`.** itch serves the game online, so CDN links *do*
-  load, but for reliability at judging time prefer **self-contained**: if the game hot-links a
-  third-party script/font, consider **vendoring** it into the zip so a slow or down CDN can't
-  break it. If the main file has another name, tell the user — itch needs `index.html`.
+- **Confirm the entry file is `index.html`.** itch serves the game online, so **CDN links load
+  fine** — the Phaser/three.js CDN tags work as-is at judging time. Just make sure every URL is
+  **`https://`** (itch blocks `http://` as mixed content) and that the engine URL **pins a
+  version** so it can't shift under you. If the main file has another name, tell the user — itch
+  needs `index.html`.
 - **Put all generated artifacts in a `submission/` folder** at the project root (create it if
   needed) — it's regenerated build output, kept apart from the game's own files. **Create the zip
   with `index.html` at the ROOT of the archive** (not in a subfolder), including the `assets/`
