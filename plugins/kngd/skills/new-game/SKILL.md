@@ -77,6 +77,13 @@ it").
   pinned to the **same version** as core `three`. Drop to vanilla `<canvas>` only if the user
   explicitly asks. **Pin a specific version** in every CDN URL so a release can't break the game.
 - Let the engine own the canvas/renderer; keep the game code clean and lightly commented.
+- **Don't hallucinate engine APIs — look them up.** You write three.js/Phaser from memory, which
+  invents plausible-but-fake methods (e.g. `MathUtils.lerpAngle` — that's Unity's, not three.js).
+  Before using any engine helper you're not 100% sure of, **grep**
+  `${PLUGIN_ROOT}/references/engine-apis.md` — the real API surface for the pinned versions
+  (three.js r0.185.1, Phaser 3.90.0), plus common traps and ready-made snippets. If it's not there
+  and isn't a core primitive, **hand-write the 2–3 lines yourself** rather than guess a method name.
+  Core primitives + your own small helpers beat invented convenience methods.
 - **Wire up the play launcher** so the user runs the game with one double-click. Copy the kit's
   launcher into the game folder:
   ```bash
@@ -180,6 +187,7 @@ blending the two.
 
 ## References
 - The full primer (all the defaults): `../../references/game-jam-mode.md`
+- Engine API reality-check (anti-hallucination, pinned versions): `../../references/engine-apis.md`
 - Brief template written into projects: `../../templates/AGENTS.md`
 - Running-state template written into projects: `../../templates/PROGRESS.md`
 - Package & submit to itch.io: `../submit/SKILL.md`

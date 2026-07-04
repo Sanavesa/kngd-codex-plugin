@@ -54,6 +54,9 @@ opening `index.html`.
   `devicePixelRatio`, resize without resetting, auto-focus the window on load and click,
   `preventDefault()` the game keys, wrap `localStorage` in try/catch, resume audio on the first
   gesture, and use one `requestAnimationFrame` loop that resets **all** state on restart.
+- **Don't invent engine APIs.** For any three.js/Phaser method you're unsure of, check the kit's
+  `engine-apis.md` reference (the real API for the pinned versions) or **hand-write the math** —
+  don't guess a method name (that's how `MathUtils.lerpAngle`-style errors happen).
 - **When you ask me something, give me 2–4 options** (recommended first) so I can just pick —
   the interactive **question tool when we're in plan mode**, or a plain-text numbered list while
   you're building — and **quietly accept more than one** when answers combine (no need to point

@@ -31,6 +31,11 @@ build.** Codex does not open a browser to test — the *user* plays their own bu
   folder and `chmod +x play.command play.py`. It starts a tiny local server and opens the browser
   (Mac/Linux via Python; Windows via Python or, with none, built-in PowerShell) — which is what
   lets **any** asset (models, atlases, tilemaps, audio) load normally from `assets/`.
+- **Don't invent engine APIs.** You write three.js/Phaser from memory and sometimes hallucinate
+  methods (e.g. `MathUtils.lerpAngle` — that's Unity's, not three.js). Before using a helper you're
+  unsure of, grep `references/engine-apis.md` (the real API for the pinned versions, plus traps and
+  snippets); if it's not there, **hand-write the math**. Core primitives + your own 2–3-line helpers
+  beat guessed convenience methods.
 
 ## Keep it itch.io-iframe-safe and crisp (from the start, and as it grows)
 
