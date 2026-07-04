@@ -27,9 +27,10 @@ build.** Codex does not open a browser to test — the *user* plays their own bu
   server (below), so `game.js` can be a plain `<script>` **or** an ES module — split three.js and
   Phaser however is cleanest, no `file://` limits.
 - **Drop in the `play` launcher** so the user plays with one double-click. Copy
-  `play.py` + `play.command` + `play.bat` from the kit's `scripts/` into the game folder and
-  `chmod +x play.command play.py`. It starts a tiny local server and opens the browser — which is
-  what lets **any** asset (models, atlases, tilemaps, audio) load normally from `assets/`.
+  `play.py` + `play.command` + `play.bat` + `play.ps1` from the kit's `scripts/` into the game
+  folder and `chmod +x play.command play.py`. It starts a tiny local server and opens the browser
+  (Mac/Linux via Python; Windows via Python or, with none, built-in PowerShell) — which is what
+  lets **any** asset (models, atlases, tilemaps, audio) load normally from `assets/`.
 
 ## Keep it itch.io-iframe-safe and crisp (from the start, and as it grows)
 

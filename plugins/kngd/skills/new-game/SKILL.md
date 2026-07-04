@@ -81,14 +81,15 @@ it").
   launcher into the game folder:
   ```bash
   cp "${PLUGIN_ROOT}/scripts/play.py" "${PLUGIN_ROOT}/scripts/play.command" \
-     "${PLUGIN_ROOT}/scripts/play.bat" .
+     "${PLUGIN_ROOT}/scripts/play.bat" "${PLUGIN_ROOT}/scripts/play.ps1" .
   chmod +x play.command play.py
   ```
-  It starts a tiny local server (no dependencies beyond Python 3, preinstalled on Mac/Linux) and
-  opens the game in the browser. Because it's a real server, load **any** asset from `assets/`
-  normally — images, audio, sprite atlases, tilemaps, 3D models all work over `http://localhost`.
-  (If you can't read the launcher files, write the equivalent yourself, or just have the user run
-  `python3 -m http.server` in the game folder.)
+  It starts a tiny local server and opens the game in the browser — Mac/Linux use Python 3
+  (preinstalled); Windows uses Python if present, else falls back to **PowerShell** (built in, no
+  install). Because it's a real server, load **any** asset from `assets/` normally — images, audio,
+  sprite atlases, tilemaps, 3D models all work over `http://localhost`. (If you can't read the
+  launcher files, write the equivalent yourself, or just have the user run `python3 -m http.server`
+  in the game folder.)
 - **Responsive and crisp from the start** (a default, not an afterthought): run game logic at a
   **fixed virtual resolution** and scale only the rendering to fit, keeping the **aspect ratio**
   (letterbox/pillarbox, never stretch) so speeds don't change with screen size. Handle

@@ -15,7 +15,7 @@ Defaults:
 
 itch.io serves games over HTTPS inside an iframe, and locally the game runs on the play launcher's
 local server, so a zero-build game (engine from a CDN) runs the same in both places. Dev-only files
-(AGENTS.md, PROGRESS.md, play.py/play.command/play.bat) are excluded. This script also warns about:
+(AGENTS.md, PROGRESS.md, play.py/play.command/play.bat/play.ps1) are excluded. This script also warns about:
   * http:// subresources  -> blocked as mixed content (itch is https)
   * https:// CDN links    -> load fine on itch (it's online); the note just flags them
 """
@@ -29,7 +29,7 @@ import zipfile
 EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", ".vscode", ".idea",
                 ".cache", "dist", "build", "submission"}
 EXCLUDE_FILES = {".DS_Store", "Thumbs.db", "AGENTS.md", "PROGRESS.md",
-                 "play.py", "play.command", "play.bat"}
+                 "play.py", "play.command", "play.bat", "play.ps1"}
 SCAN_EXTS = (".html", ".htm", ".js", ".mjs", ".css")
 
 # subresource-ish attributes/refs where a URL scheme matters on itch

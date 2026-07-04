@@ -43,7 +43,7 @@ a browser.
   ```
   The script guarantees the root layout, warns on `http://` mixed content (blocked on itch), and
   notes any CDN dependency. It also **excludes the dev-only files** (`AGENTS.md`, `PROGRESS.md`, and
-  the `play.py`/`play.command`/`play.bat` launcher) so they
+  the `play.py`/`play.command`/`play.bat`/`play.ps1` launcher) so they
   don't ship in the game. **Tell the user the exact path** to `submission/game.zip`.
 
 ## 3. Publishing checklist

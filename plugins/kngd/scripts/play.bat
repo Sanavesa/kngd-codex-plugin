@@ -13,8 +13,5 @@ if %errorlevel%==0 (
   python play.py
   goto :eof
 )
-echo.
-echo Python isn't installed. Get it from https://www.python.org/downloads/
-echo During install, tick "Add Python to PATH", then double-click me again.
-echo.
-pause
+REM No Python found - fall back to PowerShell, which is built into Windows.
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0play.ps1"
