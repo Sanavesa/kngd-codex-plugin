@@ -11,7 +11,7 @@ those exact releases' source.
 ## The three rules
 
 1. **Don't invent APIs.** You are on three.js r0.185.1 and Phaser 3.90.0 — only use methods that
-   exist in *those* versions. No methods from Unity, Godot, p5.js, GSAP, or a newer/older three.js.
+   exist in *those* versions. No methods from Unity, Godot, p5.js, GSAP, or a newer/older version.
 2. **Hand-write math helpers; don't trust convenience methods.** Core primitives are safe and
    well-known (`Vector3`, `Quaternion.slerp`, `Math.sin/atan2`, `MathUtils.lerp/clamp/damp`). The
    *convenience* helpers are where hallucinations live. For anything beyond a core primitive, write
@@ -24,7 +24,9 @@ those exact releases' source.
    If it's not here (and isn't a core primitive), either hand-write it or confirm it in the pinned
    source (`raw.githubusercontent.com/mrdoob/three.js/r185/…`, `…/phaserjs/phaser/v3.90.0/…`) —
    **do not guess.** three.js *addons* (OrbitControls, GLTFLoader) are NOT in the core list below;
-   they live under `three/addons/…` (examples/jsm) — verify their names there.
+   they live under `three/addons/…` (examples/jsm) — verify their names there. The Phaser lists
+   below are the top-level namespaces + the most hallucination-prone method sets, not every method
+   of every class; for a deep instance method, check the pinned source.
 
 ## Common cross-engine / stale-version traps
 
@@ -37,12 +39,13 @@ those exact releases' source.
 | `new THREE.SphereBufferGeometry()` (and `Box/Plane…BufferGeometry`) | ❌ the `*BufferGeometry` names were removed — use `SphereGeometry`, `BoxGeometry`, … |
 | `Phaser.Math.Lerp(a,b,t)` | ❌ it's **`Phaser.Math.Linear(a, b, t)`**. |
 | angle lerp in Phaser | use `Phaser.Math.Angle.RotateTo` / `Phaser.Math.Angle.Wrap` / `Phaser.Math.Angle.ShortestBetween`. |
+| `this.add.<x>` for a made-up object | check the `this.add.*` list below — if it's not there, it's not a factory method. |
 
 ## Ready-made plain-JS helpers (paste instead of guessing)
 
 ```js
 const clamp      = (x, lo, hi) => Math.min(hi, Math.max(lo, x));
-const lerp       = (a, b, t) => a + (b - a) * t;               // three.js: MathUtils.lerp
+const lerp       = (a, b, t) => a + (b - a) * t;               // three.js: MathUtils.lerp / Phaser: Math.Linear
 const invLerp    = (a, b, v) => (v - a) / (b - a);             // three.js: MathUtils.inverseLerp
 // Frame-rate-independent smoothing toward a target (three.js MathUtils.damp is the real one):
 const expDecay   = (a, b, lambda, dt) => b + (a - b) * Math.exp(-lambda * dt);
@@ -64,26 +67,6 @@ ceilPowerOfTwo clamp damp degToRad denormalize euclideanModulo floorPowerOfTwo
 generateUUID inverseLerp isPowerOfTwo lerp mapLinear normalize pingpong radToDeg 
 randFloat randFloatSpread randInt seededRandom setQuaternionFromProperEuler 
 smootherstep smoothstep 
-```
-
-### Phaser 3.90 — `Phaser.Math.*`
-
-```
-Angle Average Bernstein Between CatmullRom CeilTo Clamp DegToRad Difference Distance 
-Easing Euler Factorial FloatBetween FloorTo FromPercent Fuzzy GetSpeed Interpolation 
-IsEven IsEvenStrict Linear LinearXY Matrix3 Matrix4 MaxAdd Median MinSub Percent Pow2 
-Quaternion RadToDeg RandomDataGenerator RandomXY RandomXYZ RandomXYZW Rotate 
-RotateAround RotateAroundDistance RotateTo RotateVec3 RoundAwayFromZero RoundTo 
-SinCosTableGenerator SmoothStep SmootherStep Snap ToXY TransformXY Vector2 Vector3 
-Vector4 Within Wrap 
-```
-
-### Phaser 3.90 — `Phaser.Math.Angle.*`
-
-```
-Between BetweenPoints BetweenPointsY BetweenY CounterClockwise GetClockwiseDistance 
-GetCounterClockwiseDistance GetShortestDistance Normalize Random RandomDegrees Reverse 
-RotateTo ShortestBetween Wrap WrapDegrees 
 ```
 
 ### three.js r185 — all top-level `THREE.*` exports (core; addons are separate)
@@ -178,4 +161,68 @@ WebGLRenderTarget WebGLRenderer WebGLUtils WebGPUCoordinateSystem WebXRControlle
 WireframeGeometry WrapAroundEnding ZeroCurvatureEnding ZeroFactor ZeroSlopeEnding 
 ZeroStencilOp createCanvasElement error getConsoleFunction log setConsoleFunction warn 
 warnOnce 
+```
+
+### Phaser 3.90 — top-level `Phaser.*` namespaces
+
+```
+Actions Animations BlendModes Cache Cameras Class Core Create Curves DOM Data Display 
+Events FX Game GameObjects Geom Input Loader Math Physics Plugins Renderer Scale 
+ScaleModes Scene Scenes Structs Textures Tilemaps Time Tweens Utils 
+```
+
+### Phaser 3.90 — `Phaser.Math.*`
+
+```
+Angle Average Bernstein Between CatmullRom CeilTo Clamp DegToRad Difference Distance 
+Easing Euler Factorial FloatBetween FloorTo FromPercent Fuzzy GetSpeed Interpolation 
+IsEven IsEvenStrict Linear LinearXY Matrix3 Matrix4 MaxAdd Median MinSub Percent Pow2 
+Quaternion RadToDeg RandomDataGenerator RandomXY RandomXYZ RandomXYZW Rotate 
+RotateAround RotateAroundDistance RotateTo RotateVec3 RoundAwayFromZero RoundTo 
+SinCosTableGenerator SmoothStep SmootherStep Snap ToXY TransformXY Vector2 Vector3 
+Vector4 Within Wrap 
+```
+
+### Phaser 3.90 — `Phaser.Math.Angle.*`
+
+```
+Between BetweenPoints BetweenPointsY BetweenY CounterClockwise GetClockwiseDistance 
+GetCounterClockwiseDistance GetShortestDistance Normalize Random RandomDegrees Reverse 
+RotateTo ShortestBetween Wrap WrapDegrees 
+```
+
+### Phaser 3.90 — `Phaser.Geom.*`
+
+```
+Circle Ellipse Intersects Line Mesh Point Polygon Rectangle Triangle 
+```
+
+### Phaser 3.90 — `Phaser.GameObjects.*` (classes)
+
+```
+Arc BitmapText Blitter Bob BuildGameObject BuildGameObjectAnimation Components 
+Container Creators Curve DOMElement DisplayList DynamicBitmapText Ellipse Events Extern 
+Factories GameObject GameObjectCreator GameObjectFactory GetCalcMatrix GetTextSize 
+Graphics Grid Group Image IsoBox IsoTriangle Layer Line MeasureText Particles 
+PathFollower Polygon Rectangle RenderTexture RetroFont Rope Shape Sprite Star 
+StaticBitmapText Text TextStyle TileSprite Triangle UpdateList Video Zone 
+```
+
+### Phaser 3.90 — scene factory `this.add.*` (GameObjectFactory)
+
+```
+arc bitmapMask bitmapText blitter circle container curve dom dynamicBitmapText ellipse 
+extern follower graphics grid group image isobox isotriangle layer line mesh nineslice 
+particles path plane pointlight polygon rectangle renderTexture rope shader sprite star 
+text tileSprite tilemap timeline triangle tween tweenchain video zone 
+```
+
+### Phaser 3.90 — `Phaser.Physics.Arcade.*` and `this.physics.add.*` (Arcade Factory)
+
+```
+Namespace: ArcadePhysics Body Collider Components Events Factory GetCollidesWith 
+GetOverlapX GetOverlapY Group Image SeparateX SeparateY Sprite StaticBody StaticGroup 
+Tilemap World 
+Arcade factory (this.physics.add.): body collider group image overlap sprite staticBody 
+staticGroup staticImage staticSprite 
 ```
