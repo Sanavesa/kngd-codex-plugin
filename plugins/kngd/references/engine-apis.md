@@ -19,7 +19,7 @@ those exact releases' source.
 3. **Verify before you use it.** Before calling any engine helper you're not 100% sure of, grep this
    file:
    ```bash
-   grep -wi lerpAngle plugins/kngd/references/engine-apis.md   # → not found = don't use it
+   grep -wi lerpAngle "${PLUGIN_ROOT}/references/engine-apis.md"   # not found = don't use it
    ```
    If it's not here (and isn't a core primitive), either hand-write it or confirm it in the pinned
    source (`raw.githubusercontent.com/mrdoob/three.js/r185/…`, `…/phaserjs/phaser/v3.90.0/…`) —

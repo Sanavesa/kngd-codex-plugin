@@ -18,7 +18,8 @@
     "beginner",
     "itch",
     "itch-io",
-    "single-file",
+    "phaser",
+    "threejs",
     "no-build"
   ],
   "skills": "./skills/",

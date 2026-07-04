@@ -42,20 +42,25 @@ Start-Process $url
 try {
   while ($listener.IsListening) {
     $ctx = $listener.GetContext()
-    $rel = [System.Uri]::UnescapeDataString($ctx.Request.Url.AbsolutePath).TrimStart('/')
-    if ($rel -eq '') { $rel = 'index.html' }
-    $file = Join-Path $root $rel
-    $res = $ctx.Response
-    $res.Headers['Cache-Control'] = 'no-store'
-    if (Test-Path $file -PathType Leaf) {
-      $bytes = [System.IO.File]::ReadAllBytes($file)
-      $ext = [System.IO.Path]::GetExtension($file).ToLower()
-      if ($mime.ContainsKey($ext)) { $res.ContentType = $mime[$ext] }
-      $res.OutputStream.Write($bytes, 0, $bytes.Length)
-    } else {
-      $res.StatusCode = 404
+    try {
+      $rel = [System.Uri]::UnescapeDataString($ctx.Request.Url.AbsolutePath).TrimStart('/')
+      if ($rel -eq '') { $rel = 'index.html' }
+      $file = Join-Path $root $rel
+      $res = $ctx.Response
+      $res.Headers['Cache-Control'] = 'no-store'
+      if (Test-Path $file -PathType Leaf) {
+        $bytes = [System.IO.File]::ReadAllBytes($file)
+        $ext = [System.IO.Path]::GetExtension($file).ToLower()
+        if ($mime.ContainsKey($ext)) { $res.ContentType = $mime[$ext] }
+        $res.OutputStream.Write($bytes, 0, $bytes.Length)
+      } else {
+        $res.StatusCode = 404
+      }
+    } catch {
+      # A browser that reloads or cancels mid-response throws here — ignore and keep serving.
+    } finally {
+      try { $ctx.Response.OutputStream.Close() } catch {}
     }
-    $res.OutputStream.Close()
   }
 } finally {
   $listener.Stop()
